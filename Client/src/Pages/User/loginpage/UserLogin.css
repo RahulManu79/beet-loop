@@ -1,0 +1,16 @@
+.login {
+  /* height: 100vb; */
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.innerbox {
+  height: 85vh;
+  width: 75vw;
+  display: flex;
+  border-radius: 4%;
+}
+.img {
+  object-fit: cover;
+}
