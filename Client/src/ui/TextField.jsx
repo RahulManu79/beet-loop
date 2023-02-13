@@ -3,9 +3,12 @@ import { TextField } from "@mui/material";
 import React from "react";
 
 export const TextFiledCustom = styled(TextField)({
-  backgroundColor: "white",
+  // backgroundColor: "white",
   input: {
-    color: "black",
+    color: "white",
+  },
+  label: {
+    color: "white",
   },
   borderRadius: "10px",
   //   tabSize: "small",
