@@ -29,4 +29,15 @@ module.exports = {
       }
     }
   },
+
+  getUser: async (req, res) => {
+    try {
+      const user = await User.find();
+      res.json({ users: user });
+    } catch (error) {
+      return res
+        .status(200)
+        .send({ message: "Error in finding user", success: false });
+    }
+  },
 };
