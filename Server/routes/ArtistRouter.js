@@ -1,6 +1,13 @@
 const express = require("express");
-const ArtistRouter = express.Router();
+const {
+  ArtistRegister,
+  LoginArtist,
+} = require("../Controllers/artist/ArtistControler");
 
-ArtistRouter.get("/user");
+const router = express.Router();
 
-module.exports = ArtistRouter;
+router.post("/register", ArtistRegister);
+
+router.post("/login", LoginArtist);
+
+module.exports = router;

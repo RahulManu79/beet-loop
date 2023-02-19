@@ -1,6 +1,8 @@
 const express = require("express");
-const AdminRouter = express.Router();
+const { AdminLogin } = require("../Controllers/admin/AdminControllers");
 
-ArtistRouter.get("/user");
+const router = express.Router();
 
-module.exports = AdminRouter;
+router.post("/login", AdminLogin);
+
+module.exports = router;

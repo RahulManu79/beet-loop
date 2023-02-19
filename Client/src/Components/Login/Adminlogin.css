@@ -1,0 +1,25 @@
+.gradient {
+  background: rgb(7, 5, 39);
+  background: linear-gradient(
+    0deg,
+    rgba(7, 5, 39, 1) 23%,
+    rgba(44, 87, 30, 0.9726015406162465) 100%
+  );
+  width: 100vw;
+  height: 100vb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inner {
+  background: #050325;
+  background: radial-gradient(
+    circle,
+    rgba(5, 3, 37, 0.966999299719888) 73%,
+    rgba(39, 128, 30, 0.5776435574229692) 100%
+  );
+}
+
+.MuiInput-root {
+  border-bottom: 1px solid #53af5b !important;
+}

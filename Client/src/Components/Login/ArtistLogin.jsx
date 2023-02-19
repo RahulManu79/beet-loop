@@ -15,7 +15,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function Login() {
+function LoginArtist() {
   const navigate = useNavigate();
   const [error, setbError] = useState(null);
   const [open, setOpen] = React.useState(false);
@@ -75,7 +75,7 @@ function Login() {
       setError(null);
       setLoged(false);
       axios
-        .post("http://localhost:4000/login", {
+        .post("http://localhost:4000/artist/login", {
           email,
           password,
         })
@@ -83,7 +83,7 @@ function Login() {
           let result = response.data;
           if (result.success) {
             setLoged(true);
-            navigate("/");
+            navigate("/artist/home");
             localStorage.setItem("token", response.data.data);
           } else {
             setbError(response.data.message);
@@ -93,7 +93,6 @@ function Login() {
       console.log(error);
     }
   };
-  console.log({ loged });
   return (
     <>
       <div className="login min-h-[100vh] bg-[#0F1F32]  flex justify-center content-center ">
@@ -104,7 +103,7 @@ function Login() {
             </div>
             <div className="w-full md:w-7/12 h-full mt-3 ">
               <div className="flex  text-white justify-center font-semibold mt-5">
-                <h1 className="text-2xl ">Login/Sign in</h1>
+                <h1 className="text-2xl ">Welcome Artist</h1>
               </div>
               <div className="flex flex-col mt-8 ">
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -200,4 +199,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginArtist;

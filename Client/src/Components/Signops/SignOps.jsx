@@ -6,12 +6,12 @@ import { ColorButton } from "../../ui/Button";
 
 function SignOps() {
   let navigate = useNavigate();
-  const fanRegister = (e) => {
+  const fanRegister = () => {
     navigate("/userregister");
   };
 
   const artistRegister = () => {
-    navigate("/artistregister");
+    navigate("/artist/register");
   };
   return (
     <>

@@ -1,21 +1,19 @@
-import { useState } from "react";
+/* eslint-disable react/react-in-jsx-scope */
+import {} from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import ArtistRegister from "./Pages/ArtistRegister";
-import Signoptins from "./Pages/Signoptins";
-import UserLogin from "./Pages/UserLogin";
-import Userregister from "./Pages/Userregister";
+import Admin from "./routes/Admin";
+import Artist from "./routes/Artist";
+import User from "./routes/User";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
+    // eslint-disable-next-line react/react-in-jsx-scope
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<UserLogin />} />
-        <Route path="/signoptions" element={<Signoptins />} />
-        <Route path="/userregister" element={<Userregister />} />
-        <Route path="/artistregister" element={<ArtistRegister />} />
+        <Route path="/*" element={<User />} />
+        <Route path="/artist/*" element={<Artist />} />
+        <Route path="/admin/*" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );
