@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable comma-dangle */
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../Model/UserSchema");
@@ -49,26 +51,38 @@ module.exports = {
       const { email, password } = req.body;
       // eslint-disable-next-line object-shorthand
       const user = await User.findOne({ email: email });
+
       if (!user) {
         res
-          .status(400)
+          .status(200)
           .send({ message: "No User Found in this email", success: false });
       } else {
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (isMatch) {
-          // eslint-disable-next-line no-underscore-dangle
-          const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
-            expiresIn: "7d",
-          });
-          res.status(200).send({
-            message: "Successfully logged in",
-            success: true,
-            data: token,
-          });
-        } else {
-          return res
+        // eslint-disable-next-line no-lonely-if
+        if (user.isBanned) {
+          res
             .status(200)
-            .send({ message: "password incorrect", success: false });
+            .send({ message: "Your account has been baned", success: false });
+        } else {
+          const isMatch = await bcrypt.compare(password, user.password);
+          if (isMatch) {
+            // eslint-disable-next-line no-underscore-dangle
+            const token = jwt.sign(
+              { _id: this._id },
+              process.env.JWTPRIVATEKEY,
+              {
+                expiresIn: "7d",
+              }
+            );
+            res.status(200).send({
+              message: "Successfully logged in",
+              success: true,
+              data: token,
+            });
+          } else {
+            return res
+              .status(200)
+              .send({ message: "password incorrect", success: false });
+          }
         }
       }
     } catch (error) {

@@ -40,4 +40,18 @@ module.exports = {
         .send({ message: "Error in finding user", success: false });
     }
   },
+
+  userBlk: async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const user = await User.findById(userId);
+      user.isBanned = !user.isBanned;
+      await user.save();
+      res.json({ status: "success", message: "User Status has Changed" });
+    } catch (error) {
+      return res
+        .status(200)
+        .send({ message: "Error in Blocking user", success: false });
+    }
+  },
 };
