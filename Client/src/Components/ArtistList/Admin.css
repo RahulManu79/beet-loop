@@ -1,0 +1,43 @@
+.main {
+  background: rgb(12, 29, 36);
+  background: linear-gradient(
+    0deg,
+    rgba(12, 29, 36, 1) 0%,
+    rgba(6, 7, 37, 1) 36%,
+    rgba(15, 22, 40, 1) 49%,
+    rgba(25, 40, 44, 1) 66%,
+    rgba(34, 55, 47, 1) 75%,
+    rgba(42, 68, 50, 1) 88%,
+    rgba(59, 97, 55, 1) 100%,
+    rgba(39, 128, 30, 1) 100%
+  );
+}
+.MuiDataGrid-cellContent {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: white !important;
+}
+.css-1jbbcbn-MuiDataGrid-columnHeaderTitle {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: white !important;
+  font-weight: 500;
+}
+.css-levciy-MuiTablePagination-displayedRows {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  color: white !important;
+  flex-shrink: 0;
+}
+.css-i4bv87-MuiSvgIcon-root {
+  color: white !important;
+}
+.css-de9k3v-MuiDataGrid-selectedRowCount {
+  color: white !important;
+}

@@ -77,6 +77,7 @@ module.exports = {
               message: "Successfully logged in",
               success: true,
               data: token,
+              name: user.name,
             });
           } else {
             return res

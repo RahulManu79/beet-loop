@@ -10,7 +10,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-
+import { useDispatch } from "react-redux";
+import { setLogin } from "../../redux/Slice/UserSlice";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -20,6 +21,7 @@ function Login() {
   const [error, setbError] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [loged, setLoged] = useState(false);
+  const dispatch = useDispatch();
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -81,8 +83,16 @@ function Login() {
         })
         .then((response) => {
           let result = response.data;
+          console.log(result);
           if (result.success) {
             setLoged(true);
+            dispatch(
+              setLogin({
+                user: "user",
+                name: result.name,
+                token: result.token,
+              })
+            );
             navigate("/");
             localStorage.setItem("token", response.data.data);
           } else {

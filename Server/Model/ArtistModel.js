@@ -46,6 +46,14 @@ const ArtistSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

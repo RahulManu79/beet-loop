@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../Model/UserSchema");
+const { Artist } = require("../../Model/ArtistModel");
 
 module.exports = {
   AdminLogin: async (req, res) => {
@@ -41,6 +42,15 @@ module.exports = {
     }
   },
 
+  getArtist: async (req, res) => {
+    try {
+      const artist = await Artist.find();
+      res.json({ artists: artist });
+    } catch (error) {
+      return res.status(200).send({ message: "error in listing Artist" });
+    }
+  },
+
   userBlk: async (req, res) => {
     try {
       const userId = req.params.id;
@@ -52,6 +62,34 @@ module.exports = {
       return res
         .status(200)
         .send({ message: "Error in Blocking user", success: false });
+    }
+  },
+
+  artistBlk: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const artist = await Artist.findById(id);
+      artist.isBanned = !artist.isBanned;
+      await artist.save();
+      res.json({ status: "success", message: "Artist Status has Changed" });
+    } catch (error) {
+      return res
+        .status(200)
+        .send({ message: "Error in Blocking Artist", success: false });
+    }
+  },
+
+  artistVerify: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const artist = await Artist.findById(id);
+      artist.isVerified = !artist.isVerified;
+      await artist.save();
+      res.json({ status: "success", message: "Artist Status has Changed" });
+    } catch (error) {
+      return res
+        .status(200)
+        .send({ message: "Error in Verify", success: false });
     }
   },
 };

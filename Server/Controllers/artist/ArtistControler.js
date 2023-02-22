@@ -1,3 +1,6 @@
+/* eslint-disable no-lonely-if */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable comma-dangle */
 /* eslint-disable consistent-return */
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -50,28 +53,37 @@ module.exports = {
       const user = await Artist.findOne({ email: email });
       if (!user) {
         res
-          .status(400)
+          .status(200)
           .send({ message: "No User Found in this email", success: false });
       } else {
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (isMatch) {
-          // eslint-disable-next-line no-underscore-dangle
-          const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
-            expiresIn: "7d",
-          });
-          res.status(200).send({
-            message: "Successfully logged in",
-            success: true,
-            data: token,
-          });
-        } else {
-          return res
+        if (user.isBanned) {
+          res
             .status(200)
-            .send({ message: "password incorrect", success: false });
+            .send({ message: "Your account has been baned", success: false });
+        } else {
+          const isMatch = await bcrypt.compare(password, user.password);
+          if (isMatch) {
+            // eslint-disable-next-line no-underscore-dangle
+            const token = jwt.sign(
+              { _id: this._id },
+              process.env.JWTPRIVATEKEY,
+              {
+                expiresIn: "7d",
+              }
+            );
+            res.status(200).send({
+              message: "Successfully logged in",
+              success: true,
+              data: token,
+            });
+          } else {
+            return res
+              .status(200)
+              .send({ message: "password incorrect", success: false });
+          }
         }
       }
     } catch (error) {
-      console.log(error);
       res
         .status(500)
         .send({ message: "error logging in", success: false, error });

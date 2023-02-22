@@ -40,7 +40,6 @@ function Userlistadmin() {
   const userBlk = async (userId) => {
     const data = await doUserBlk(userId);
     if (data.status === "success") {
-      console.log(data);
       setOpen(true);
       setalert(data.message);
       setUserStatus(!userStatus);

@@ -1,5 +1,5 @@
 import React from "react";
-import Artistlist from "../Components/UserList/ArtistList/Artistlist";
+import Artistlist from "../Components/ArtistList/Artistlist";
 
 function ArtistList() {
   return <Artistlist />;
