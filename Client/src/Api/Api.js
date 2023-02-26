@@ -69,3 +69,15 @@ export const doArtistVry = async (id) => {
     return error.response.data.error;
   }
 };
+
+export const getProfile = async (id) => {
+  try {
+    const res = await axios.get(`http://localhost:4000/getprofile/${id}`);
+    const data = res.data;
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

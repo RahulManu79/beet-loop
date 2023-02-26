@@ -10,7 +10,6 @@ import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 
 // eslint-disable-next-line react/prop-types
 function UserSidebar({ setIsOpen }) {
-  console.log("evady5");
   return (
     <>
       <div

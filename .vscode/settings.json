@@ -5,6 +5,7 @@
     "artistregister",
     "Controler",
     "JWTPRIVATEKEY",
+    "setcurrent",
     "Signoptins",
     "Userlist",
     "Userlistadmin",

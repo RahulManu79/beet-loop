@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable comma-dangle */
 const bcrypt = require("bcrypt");
@@ -7,17 +8,14 @@ const { User } = require("../../Model/UserSchema");
 module.exports = {
   userRegister: async (req, res) => {
     try {
-      console.log(req.body);
       if (req.body.ConfirmPassword !== req.body.password) {
         res
           .status(400)
           .send({ message: "passwords does not match ", success: false });
-        console.log("password dose not mach");
       }
       const user = await User.findOne({ email: req.body.email });
 
       if (user) {
-        console.log("user already und");
         res
           .status(400)
           .send({ message: "User already Exists", success: false });
@@ -38,7 +36,6 @@ module.exports = {
           .send({ message: "user created successfully", success: true });
       }
     } catch (error) {
-      console.log(error);
       res
         .status(500)
         .send({ message: "user already exists", success: false, error });
@@ -78,6 +75,7 @@ module.exports = {
               success: true,
               data: token,
               name: user.name,
+              id: user._id,
             });
           } else {
             return res
@@ -87,10 +85,32 @@ module.exports = {
         }
       }
     } catch (error) {
-      console.log(error);
       res
         .status(500)
         .send({ message: "error logging in", success: false, error });
+    }
+  },
+  getProfile: async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const user = await User.findById(userId);
+      if (user) {
+        res.status(200).send({
+          message: "Fetched User Profile",
+          success: true,
+          data: user,
+        });
+      } else {
+        return res
+          .status(200)
+          .send({ message: "Error in Fetching User Profile ", success: false });
+      }
+    } catch (error) {
+      res.status(500).send({
+        message: "error in getting user Profile",
+        success: false,
+        error,
+      });
     }
   },
 };

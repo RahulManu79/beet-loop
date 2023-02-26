@@ -91,6 +91,7 @@ function Login() {
                 user: "user",
                 name: result.name,
                 token: result.token,
+                id: result.id,
               })
             );
             navigate("/");

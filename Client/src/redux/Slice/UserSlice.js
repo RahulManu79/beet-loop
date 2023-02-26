@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   name: null,
   token: null,
+  id: null,
 };
 
 export const userSlice = createSlice({
@@ -14,11 +15,13 @@ export const userSlice = createSlice({
       state.user = action.payload.user;
       state.name = action.payload.name;
       state.token = action.payload.token;
+      state.id = action.payload.id;
     },
     setLogout: (state) => {
       state.user = null;
       state.name = null;
       state.token = null;
+      state.id = null;
     },
   },
 });

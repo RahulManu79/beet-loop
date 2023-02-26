@@ -31,7 +31,6 @@ function Artistlist() {
       if (data.status === "failed") {
         navigate("admin/login");
       } else {
-        console.log(data.artists);
         setUser(data.artists);
       }
     }
@@ -176,9 +175,10 @@ function Artistlist() {
       </div>
       <div className=" w-5/6 h-screen flex justify-center content-center mt-7  ">
         <div className="" style={{ height: 500, width: "90%" }}>
-          <h1 className="relative text-white text-3xl font-extrabold mb-5">
+          <h1 className="relative text-white text-3xl font-extrabold mb-7">
             Artist List
           </h1>
+
           <DataGrid
             rows={user}
             columns={columns}

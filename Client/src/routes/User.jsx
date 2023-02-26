@@ -7,6 +7,7 @@ import UserLogin from "../Pages/UserLogin";
 import Userregister from "../Pages/Userregister";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import PublicRoute from "../Components/PublicRoute";
+import Userprofile from "../Pages/Userprofile";
 
 function User() {
   return (
@@ -41,6 +42,15 @@ function User() {
         element={
           <ProtectedRoute>
             <UserHome />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Userprofile />
           </ProtectedRoute>
         }
       />

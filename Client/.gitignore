@@ -22,3 +22,48 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+
+
+ <Box
+              sx={{
+                width: 700,
+                gap: "10px",
+                rowGap: "100px",
+                columnGap: "100px",
+                maxWidth: "100%",
+              }}
+            >
+              <TextField
+                fullWidth
+                label="User Name"
+                id="fullWidth"
+                variant="standard"
+                disabled
+              />
+
+              <TextField
+                fullWidth
+                label="User Name"
+                id="fullWidth"
+                variant="standard"
+                disabled
+              />
+
+              <TextField
+                fullWidth
+                label="User Name"
+                id="fullWidth"
+                variant="standard"
+                disabled
+              />
+
+              <TextField
+                fullWidth
+                label="User Name"
+                id="fullWidth"
+                variant="standard"
+                disabled
+              />
+            </Box>
