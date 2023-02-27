@@ -1,0 +1,18 @@
+.f {
+  background: rgb(238, 142, 88);
+  background: linear-gradient(
+    155deg,
+    rgba(238, 142, 88, 1) 0%,
+    rgba(248, 68, 81, 1) 47%,
+    rgba(251, 50, 79, 1) 57%
+  );
+}
+.main {
+  background: rgb(36, 42, 69);
+  background: linear-gradient(
+    180deg,
+    rgba(36, 42, 69, 1) 9%,
+    rgba(30, 57, 83, 1) 38%,
+    rgba(31, 55, 81, 1) 100%
+  );
+}

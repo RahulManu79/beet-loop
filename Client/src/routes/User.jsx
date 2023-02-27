@@ -8,6 +8,8 @@ import Userregister from "../Pages/Userregister";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import PublicRoute from "../Components/PublicRoute";
 import Userprofile from "../Pages/Userprofile";
+import UserProfileEdit from "../Pages/UserProfileEdit";
+import UserPlayList from "../Pages/UserPlayList";
 
 function User() {
   return (
@@ -51,6 +53,24 @@ function User() {
         element={
           <ProtectedRoute>
             <Userprofile />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile/edit"
+        element={
+          <ProtectedRoute>
+            <UserProfileEdit />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/playlist"
+        element={
+          <ProtectedRoute>
+            <UserPlayList />
           </ProtectedRoute>
         }
       />

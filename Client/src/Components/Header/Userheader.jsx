@@ -59,10 +59,10 @@ const Header = () => {
     navigate("/profile");
   };
   return (
-    <div className="">
+    <div className="h-[64px] w-full flex justify-end ">
       <StyledToolbar>
         <div className="relative">
-          <span className="absolute inset-y-0 left-0 flex items-center py-4">
+          <span className="absolute inset-y-0 left-0 flex  items-center py-4">
             <button type="submit" className="p-2 focus:outline-none focus:ring">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +85,7 @@ const Header = () => {
             type="search"
             name="Search"
             placeholder="Search..."
-            className="w-64 py-2 pl-10 text-sm rounded-md focus:outline-none bg-[#1D364F] mr-20 text-white"
+            className="w-64  py-2 pl-10 text-sm rounded-md focus:outline-none bg-[#1D364F] mr-20 text-white"
           />
         </div>
         <div className="mr-16">

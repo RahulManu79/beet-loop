@@ -7,6 +7,7 @@ import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DownloadIcon from "@mui/icons-material/Download";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 function UserSidebar({ setIsOpen }) {
@@ -21,48 +22,62 @@ function UserSidebar({ setIsOpen }) {
         <div>
           <img src={logo} alt="" />
         </div>
-        <div className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <DashboardIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Discover</p>
+        <Link to="/">
+          <div className="mt-10 ml-3">
+            <div className="flex justify-around">
+              <DashboardIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">Discover</p>
+            </div>
           </div>
-        </div>
-        <div className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <KeyboardVoiceIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Artists</p>
+        </Link>
+        <Link to="/artist">
+          <div className="mt-10 ml-3">
+            <div className="flex justify-around">
+              <KeyboardVoiceIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">Artists</p>
+            </div>
           </div>
-        </div>
-        <div className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <AlbumIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Albums</p>
+        </Link>
+        <Link to="/albums">
+          <div className="mt-10 ml-3">
+            <div className="flex justify-around">
+              <AlbumIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">Albums</p>
+            </div>
           </div>
-        </div>
-        <div className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <LibraryMusicIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Musics</p>
+        </Link>
+        <Link to="/music">
+          <div className="mt-10 ml-3">
+            <div className="flex justify-around">
+              <LibraryMusicIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">Musics</p>
+            </div>
           </div>
-        </div>
-        <div className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <FavoriteIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Favourites</p>
+        </Link>
+        <Link to="/favorites">
+          <div className="mt-10 ml-3">
+            <div className="flex justify-around">
+              <FavoriteIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">Favorites</p>
+            </div>
           </div>
-        </div>
-        <div className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <QueueMusicIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">PlayList</p>
+        </Link>
+        <Link to="/playlist">
+          <div className="mt-10 ml-3">
+            <div className="flex justify-around">
+              <QueueMusicIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">PlayList</p>
+            </div>
           </div>
-        </div>
-        <div className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <DownloadIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Downloads</p>
+        </Link>
+        <Link to="/downloads">
+          <div className="mt-10 ml-3">
+            <div className="flex justify-around">
+              <DownloadIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">Downloads</p>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );

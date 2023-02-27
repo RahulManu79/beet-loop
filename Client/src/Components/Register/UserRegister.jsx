@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import React, { useState, useEffect } from "react";
 import loginImage from "../../assets/james-owen-c-NBiJrhwdM-unsplash.jpg";
 import { TextFiledCustom } from "../../ui/TextField";
@@ -7,6 +8,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { Auth } from "../../Config/firebase.config";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -16,6 +19,10 @@ function UserRegister() {
   const navigate = useNavigate();
   const [error, setbError] = useState(null);
   const [open, setOpen] = React.useState(false);
+  const [phone, setPhone] = useState(null);
+  const [otp, setotp] = useState(false);
+  const [eOtp, setEOtp] = useState(null);
+  const [Res, setRes] = useState(null);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -112,6 +119,32 @@ function UserRegister() {
     }
   };
 
+  function setUpRecaptcha() {
+    setotp(true);
+    const recaptchaVerifier = new RecaptchaVerifier(
+      "recaptcha-seeker-container",
+      {},
+      Auth
+    );
+    recaptchaVerifier.render();
+    return signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier).then(
+      (res) => {
+        setRes(res);
+      }
+    );
+  }
+
+  const handleConf = async () => {
+    try {
+      console.log(Res);
+      await Res.confirm(eOtp).then((result) => {
+        console.log(result);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="login min-h-[100vh] bg-[#0F1F32]  flex justify-center content-center ">
@@ -174,12 +207,54 @@ function UserRegister() {
                       })}
                       sx={{
                         width: 500,
-                        maxWidth: "65%",
+                        maxWidth: "52%",
                         height: 42,
                       }}
                       required
+                      onChange={(e) => {
+                        console.log(e);
+                        setPhone(e.target.value);
+                      }}
                     />
+                    <button
+                      className="bg-[#0800ff] text-white w-16 mt-3 h-10  rounded-lg p-2 "
+                      onClick={setUpRecaptcha}
+                    >
+                      Verify
+                    </button>
                   </div>
+                  <div
+                    id="recaptcha-seeker-container"
+                    className="flex justify-center ml-1 mt-2"
+                  />
+                  {otp && (
+                    <div className="w-full mt-2 flex justify-center">
+                      <TextFiledCustom
+                        id="standard-basic"
+                        label="Enter OTP"
+                        variant="standard"
+                        name="otp"
+                        sx={{
+                          width: 500,
+                          maxWidth: "52%",
+                          height: 42,
+                        }}
+                        required
+                        onChange={(e) => {
+                          console.log(e);
+                          setEOtp(e.target.value);
+                        }}
+                      />
+
+                      <button
+                        type="button"
+                        className="bg-[#0800ff] text-white w-16 h-10 rounded-lg p-2 "
+                        onClick={handleConf}
+                      >
+                        VERIFY
+                      </button>
+                    </div>
+                  )}
                   <div className="flex justify-center ml-1 mt-2">
                     <TextFiledCustom
                       id="standard-basic"
