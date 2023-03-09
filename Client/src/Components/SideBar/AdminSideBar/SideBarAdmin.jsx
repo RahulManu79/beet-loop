@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 function SideBarAdmin() {
   return (
     <>
-      <aside className="gradiant  h-screen fixed hidden sm:block ">
+      <aside className="gradiant  h-screen  hidden sm:block ">
         <div className=" ">
           <div className=" h-screen  p-3 shadow w-60 sm:w-72">
             <div className="space-y-3">

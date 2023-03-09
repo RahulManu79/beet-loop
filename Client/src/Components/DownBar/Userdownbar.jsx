@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import "./Downbar.css";
 import AudioPlayer from "react-h5-audio-player";
@@ -6,16 +7,23 @@ import music1 from "../../assets/Sickick_-_Talking_to_the_Moon_(Bruno_Mars_Remix
 import music2 from "../../assets/Yedho_Ondru_-_Amos_Paul(256k).mp3";
 import music3 from "../../assets/Da_Da_Da_(Remix_by_Mikis)(256k).mp3";
 
-function Userdownbar() {
+function Userdownbar({ songURL, img }) {
   let arr = [music1, music2, music3];
 
   return (
-    <div className="main  h-24 w-full flex">
-      <div className="f w-64 h-24"></div>
+    <div
+      style={{ width: "-webkit-fill-available" }}
+      className="main  flex relative"
+    >
+      <div className="f w-80 h-24 ">
+        <div>
+          <img src={img} alt="" />
+        </div>
+      </div>
       <div className="w-3/4">
         <AudioPlayer
-          src={arr[1]}
-          onPlay={(e) => console.log("play")}
+          src={songURL}
+          onPlay={() => console.log("play")}
           // other props here
         />
       </div>

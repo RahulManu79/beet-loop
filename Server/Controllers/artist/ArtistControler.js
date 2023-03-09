@@ -30,6 +30,7 @@ module.exports = {
             email: req.body.email,
             phone: req.body.phone,
             password: hashedPassword,
+            idurl: req.body.imageUrl,
           });
           await newArtist.save();
 
@@ -75,6 +76,8 @@ module.exports = {
               message: "Successfully logged in",
               success: true,
               data: token,
+              name: user.name,
+              id: user._id,
             });
           } else {
             return res

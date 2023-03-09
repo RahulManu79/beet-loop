@@ -164,9 +164,11 @@ function Login() {
                   </div>
                 </form>
                 <div>
-                  <p className="underline text-center text-white mt-6">
-                    Forgot Password ?
-                  </p>
+                  <Link to="/forgotpassword">
+                    <p className="underline text-center text-white mt-6">
+                      Forgot Password ?
+                    </p>
+                  </Link>
                   <Link to="/signoptions">
                     <p className="underline text-center text-white mt-6">
                       Don't Have An Account? Register Here

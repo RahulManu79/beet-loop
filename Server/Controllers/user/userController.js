@@ -1,9 +1,11 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable comma-dangle */
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../Model/UserSchema");
+const { Artist } = require("../../Model/ArtistModel");
 
 module.exports = {
   userRegister: async (req, res) => {
@@ -111,6 +113,83 @@ module.exports = {
         success: false,
         error,
       });
+    }
+  },
+
+  resetPass: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const pass = req.body.Password;
+      const Role = req.body.role;
+      if (Role === "fan") {
+        console.log(email, pass);
+        const user = await User.find({ email });
+        if (!user) {
+          res
+            .status(200)
+            .send({ message: "No User in this Email", success: false });
+        } else {
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(pass, salt);
+          await User.findOneAndUpdate(
+            { email },
+            { $set: { password: hashedPassword } }
+          ).then(() => {
+            res
+              .status(200)
+              .send({ message: "Password Changed Successful", success: true });
+          });
+        }
+      } else {
+        console.log(email, pass);
+        const artist = await Artist.find({ email });
+        if (!artist) {
+          res
+            .status(200)
+            .send({ message: "No User in this Email", success: false });
+        } else {
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(pass, salt);
+          await Artist.findOneAndUpdate(
+            { email },
+            { $set: { password: hashedPassword } }
+          ).then(() => {
+            res
+              .status(200)
+              .send({ message: "Password Changed Successful", success: true });
+          });
+        }
+      }
+    } catch (error) {
+      res
+        .status(200)
+        .send({ message: "Error in updating password", success: false });
+    }
+  },
+
+  updateProfile: async (req, res) => {
+    console.log(req.body, req.query);
+    const { id } = req.query;
+    const { email, name, phone } = req.body;
+    try {
+      // eslint-disable-next-line object-shorthand
+      await User.findOneAndUpdate(
+        { _id: id },
+        { $set: { name: name, email: email, phone: phone } }
+      ).then(async () => {
+        const ruser = await User.findOne({ _id: id });
+        console.log(ruser);
+        res.status(200).send({
+          message: "Profile Updated Successful",
+          success: true,
+          name: ruser.name,
+          id: ruser._id,
+        });
+      });
+    } catch (error) {
+      res
+        .status(200)
+        .send({ message: "Error in updating Profile", success: false });
     }
   },
 };

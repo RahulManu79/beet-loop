@@ -54,6 +54,9 @@ const ArtistSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    idurl: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -23,7 +23,9 @@ function UserRegister() {
   const [otp, setotp] = useState(false);
   const [eOtp, setEOtp] = useState(null);
   const [Res, setRes] = useState(null);
-
+  const [otpVerifyed, setVerified] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [login, setLogin] = useState(null);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -98,28 +100,32 @@ function UserRegister() {
       let phone = data.phone;
       let password = data.password;
       let ConfirmPassword = data.confirmpassword;
-
-      // setbError(null);
-      const res = await axios.post("http://localhost:4000/userregister", {
-        email,
-        name,
-        phone,
-        password,
-        ConfirmPassword,
-      });
-      let result = res.data;
-      if (result.success) {
-        navigate("/login");
+      if (otpVerifyed) {
+        const res = await axios.post("http://localhost:4000/userregister", {
+          email,
+          name,
+          phone,
+          password,
+          ConfirmPassword,
+        });
+        let result = res.data;
+        if (result.success) {
+          setLogin("User registered Successfully");
+          setOpen(true);
+          navigate("/login");
+        } else {
+          setbError(res?.data?.message);
+        }
       } else {
-        setbError(res?.data?.message);
+        setbError("Mobile OTP verification is pending");
       }
+      // setbError(null);
     } catch (err) {
       setbError(err?.response.data.message);
       console.log({ err });
     }
   };
-
-  function setUpRecaptcha() {
+  async function setUpRecaptcha() {
     setotp(true);
     const recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-seeker-container",
@@ -127,27 +133,30 @@ function UserRegister() {
       Auth
     );
     recaptchaVerifier.render();
-    return signInWithPhoneNumber(Auth, `+91${phone}`, recaptchaVerifier).then(
-      (res) => {
-        setRes(res);
-      }
+    const res = await signInWithPhoneNumber(
+      Auth,
+      `+1${phone}`,
+      recaptchaVerifier
     );
+    setRes(res);
   }
 
   const handleConf = async () => {
     try {
-      console.log(Res);
       await Res.confirm(eOtp).then((result) => {
         console.log(result);
+        setSuccess("OTP Verification Completed");
+        setVerified(true);
+        setOpen(true);
       });
     } catch (error) {
+      setbError("OTP Verification Failed, try Again");
       console.log(error);
     }
   };
-
   return (
     <>
-      <div className="login min-h-[100vh] bg-[#0F1F32]  flex justify-center content-center ">
+      <div className="login h-screen bg-[#0F1F32]  flex justify-center content-center ">
         <div className="innerbox bg-[#152537] p-10 shadow">
           <div className="w-full flex justify-center">
             <div className="hidden md:flex justify-center md:w-5/12 h-full ">
@@ -316,7 +325,33 @@ function UserRegister() {
                     severity="error"
                     sx={{ width: "100%" }}
                   >
-                    {error ? error : errors?.registerInput?.message}{" "}
+                    {error ? error : errors?.registerInput?.message}
+                  </Alert>
+                </Snackbar>
+                <Snackbar
+                  open={open}
+                  autoHideDuration={6000}
+                  onClose={handleClose}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                  >
+                    {success}
+                  </Alert>
+                </Snackbar>
+                <Snackbar
+                  open={open}
+                  autoHideDuration={6000}
+                  onClose={handleClose}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                  >
+                    {login}
                   </Alert>
                 </Snackbar>
               </div>

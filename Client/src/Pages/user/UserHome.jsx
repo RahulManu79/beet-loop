@@ -1,5 +1,5 @@
 import React from "react";
-import Userhome from "../Components/Home/Userhome";
+import Userhome from "../../Components/Home/Userhome";
 
 function UserHome() {
   return (

@@ -7,6 +7,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { Auth, storage } from "../../Config/firebase.config";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -16,7 +19,13 @@ function UserRegister() {
   const navigate = useNavigate();
   const [error, setbError] = useState(null);
   const [open, setOpen] = React.useState(false);
-
+  const [phone, setPhone] = useState(null);
+  const [otp, setotp] = useState(false);
+  const [eOtp, setEOtp] = useState(null);
+  const [Res, setRes] = useState(null);
+  const [otpVerifyed, setVerified] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [login, setLogin] = useState(null);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -92,19 +101,38 @@ function UserRegister() {
       let password = data.password;
       let ConfirmPassword = data.confirmpassword;
 
-      // setbError(null);
-      const res = await axios.post("http://localhost:4000/artist/register", {
-        email,
-        name,
-        phone,
-        password,
-        ConfirmPassword,
-      });
-      let result = res.data;
-      if (result.success) {
-        navigate("/artist/login");
-      } else {
-        setbError(res?.data?.message);
+      if (otpVerifyed) {
+        const cloudAPI = "dgysrrvk2";
+        const image = data.image[0];
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", "tnlhpsik");
+        console.log(formData);
+        let imageUrl = null;
+        await axios
+          .post(
+            `https://api.cloudinary.com/v1_1/${cloudAPI}/image/upload`,
+            formData
+          )
+          .then(async (response) => {
+            console.log(response.data.secure_url);
+            imageUrl = response.data.secure_url;
+          });
+
+        const res = await axios.post("http://localhost:4000/artist/register", {
+          email,
+          name,
+          phone,
+          password,
+          ConfirmPassword,
+          imageUrl,
+        });
+        let result = res.data;
+        if (result.success) {
+          navigate("/artist/login");
+        } else {
+          setbError(res?.data?.message);
+        }
       }
     } catch (err) {
       setbError(err?.response?.data?.message);
@@ -112,7 +140,36 @@ function UserRegister() {
     }
   };
 
-  console.log({ error });
+  async function setUpRecaptcha() {
+    setotp(true);
+    const recaptchaVerifier = new RecaptchaVerifier(
+      "recaptcha-seeker-container",
+      {},
+      Auth
+    );
+    recaptchaVerifier.render();
+    const res = await signInWithPhoneNumber(
+      Auth,
+      `+1${phone}`,
+      recaptchaVerifier
+    );
+    setRes(res);
+  }
+
+  const handleConf = async () => {
+    try {
+      await Res.confirm(eOtp).then((result) => {
+        console.log(result);
+        setSuccess("OTP Verification Completed");
+        setVerified(true);
+        setOpen(true);
+      });
+    } catch (error) {
+      setbError("OTP Verification Failed, try Again");
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="login min-h-[100vh] bg-[#0F1F32]  flex justify-center content-center ">
@@ -136,7 +193,7 @@ function UserRegister() {
                       variant="standard"
                       type="text"
                       name="name"
-                      {...register("name", { required: true, maxLength: 10 })}
+                      {...register("name", { required: true, maxLength: 30 })}
                       sx={{
                         width: 500,
                         maxWidth: "65%",
@@ -167,15 +224,62 @@ function UserRegister() {
                       variant="standard"
                       type="text"
                       name="phone"
-                      {...register("phone", { required: true, maxLength: 10 })}
+                      {...register("phone", {
+                        required: true,
+                        minLength: 10,
+                        maxLength: 13,
+                      })}
                       sx={{
                         width: 500,
-                        maxWidth: "65%",
+                        maxWidth: "52%",
                         height: 42,
                       }}
                       required
+                      onChange={(e) => {
+                        console.log(e);
+                        setPhone(e.target.value);
+                      }}
                     />
+                    <button
+                      className="bg-[#0800ff] text-white w-16 mt-3 h-10  rounded-lg p-2 "
+                      onClick={setUpRecaptcha}
+                    >
+                      Verify
+                    </button>
                   </div>
+                  <div
+                    id="recaptcha-seeker-container"
+                    className="flex justify-center ml-1 mt-2"
+                  />
+                  {otp && (
+                    <div className="w-full mt-2 flex justify-center">
+                      <TextFiledCustom
+                        id="standard-basic"
+                        label="Enter OTP"
+                        variant="standard"
+                        name="otp"
+                        sx={{
+                          width: 500,
+                          maxWidth: "52%",
+                          height: 42,
+                        }}
+                        required
+                        onChange={(e) => {
+                          console.log(e);
+                          setEOtp(e.target.value);
+                        }}
+                      />
+
+                      <button
+                        type="button"
+                        className="bg-[#0800ff] text-white w-16 h-10 rounded-lg p-2 "
+                        onClick={handleConf}
+                      >
+                        VERIFY
+                      </button>
+                    </div>
+                  )}
+
                   <div className="flex justify-center ml-1 mt-2">
                     <TextFiledCustom
                       id="standard-basic"
@@ -214,6 +318,17 @@ function UserRegister() {
                       required
                     />
                   </div>
+                  <div className="grid w-full justify-center ml-1 gap-2 mt-3">
+                    <h1 className="text-white">Upload Your Id*</h1>
+                    <input
+                      type="file"
+                      name="image"
+                      placeholder="Upload Your Id"
+                      required
+                      className="file-input file-input-sm	 file-input-bordered file-input-accent w-full max-w-xs"
+                      {...register("image", { required: true })}
+                    />
+                  </div>
                   <div className="flex justify-center mt-8">
                     <Button variant="contained" type="submit">
                       Register
@@ -238,6 +353,32 @@ function UserRegister() {
                     sx={{ width: "100%" }}
                   >
                     {error ? error : errors?.registerInput?.message}{" "}
+                  </Alert>
+                </Snackbar>
+                <Snackbar
+                  open={open}
+                  autoHideDuration={6000}
+                  onClose={handleClose}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                  >
+                    {success}
+                  </Alert>
+                </Snackbar>
+                <Snackbar
+                  open={open}
+                  autoHideDuration={6000}
+                  onClose={handleClose}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                  >
+                    {login}
                   </Alert>
                 </Snackbar>
               </div>

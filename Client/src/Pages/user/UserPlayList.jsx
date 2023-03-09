@@ -1,5 +1,5 @@
 import React from "react";
-import Userplaylist from "../Components/PlayList/Userplaylist";
+import Userplaylist from "../../Components/PlayList/Userplaylist";
 
 function UserPlayList() {
   return <Userplaylist />;

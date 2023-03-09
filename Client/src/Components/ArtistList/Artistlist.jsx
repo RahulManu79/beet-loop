@@ -169,7 +169,7 @@ function Artistlist() {
   ];
 
   return (
-    <div className="main min-h-[100vh] flex">
+    <div className="mainxx min-h-[100vh] flex">
       <div className="bg-white w-72">
         <SideBarAdmin />
       </div>

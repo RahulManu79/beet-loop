@@ -4,6 +4,7 @@ const initialState = {
   artist: null,
   name: null,
   token: null,
+  id: null,
 };
 
 export const artistSlice = createSlice({
@@ -14,11 +15,13 @@ export const artistSlice = createSlice({
       state.artist = action.payload.artist;
       state.name = action.payload.name;
       state.token = action.payload.token;
+      state.id = action.payload.id;
     },
     setLogout: (state) => {
       state.artist = null;
       state.name = null;
       state.token = null;
+      state.id = null;
     },
   },
 });

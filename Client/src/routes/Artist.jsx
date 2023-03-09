@@ -1,10 +1,12 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ArtistHome from "../Pages/ArtistHome";
-import ArtistLogin from "../Pages/ArtistLogin";
-import ArtistRegister from "../Pages/ArtistRegister";
+import ArtistHome from "../Pages/Artist/ArtistHome";
+import ArtistLogin from "../Pages/Artist/ArtistLogin";
+import ArtistRegister from "../Pages/Artist/ArtistRegister";
+import ArtistAddMusic from "../Pages/Artist/ArtistAddMusic";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import PublicRoute from "../Components/PublicRoute";
+import ArtistMusic from "../Pages/Artist/ArtistMusic";
 const Artist = () => {
   return (
     <Routes>
@@ -29,6 +31,24 @@ const Artist = () => {
         element={
           <ProtectedRoute>
             <ArtistHome />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/addmusic"
+        element={
+          <ProtectedRoute>
+            <ArtistAddMusic />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/music"
+        element={
+          <ProtectedRoute>
+            <ArtistMusic />
           </ProtectedRoute>
         }
       />

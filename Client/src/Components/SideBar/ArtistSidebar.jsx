@@ -8,7 +8,7 @@ const ArtistSidebarMain = () => {
   const [parentDiv] = useAutoAnimate();
 
   return (
-    <div ref={parentDiv}>
+    <div ref={parentDiv} className="z-50">
       {!isOpen && <ArtistSidebarSmall setIsOpen={setIsOpen} />}
       {isOpen && <ArtistSidebar setIsOpen={setIsOpen} />}
     </div>

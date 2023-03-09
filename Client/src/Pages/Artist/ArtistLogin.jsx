@@ -1,5 +1,5 @@
 import React from "react";
-import LoginArtist from "../Components/Login/ArtistLogin";
+import LoginArtist from "../../Components/Login/ArtistLogin";
 
 function ArtistLogin() {
   return <LoginArtist />;

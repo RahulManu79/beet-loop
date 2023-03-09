@@ -1,15 +1,18 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Signoptins from "../Pages/Signoptins";
-import UserHome from "../Pages/UserHome";
-import UserLogin from "../Pages/UserLogin";
-import Userregister from "../Pages/Userregister";
+import Signoptins from "../Pages/common Pages/Signoptins";
+import UserHome from "../Pages/user/UserHome";
+import UserLogin from "../Pages/user/UserLogin";
+import Userregister from "../Pages/user/Userregister";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import PublicRoute from "../Components/PublicRoute";
-import Userprofile from "../Pages/Userprofile";
-import UserProfileEdit from "../Pages/UserProfileEdit";
-import UserPlayList from "../Pages/UserPlayList";
+import Userprofile from "../Pages/user/Userprofile";
+import UserProfileEdit from "../Pages/user/UserProfileEdit";
+import UserPlayList from "../Pages/user/UserPlayList";
+import UserForgotPass from "../Pages/common Pages/UserForgotPass";
+import UserMusic from "../Pages/user/UserMusic";
+import UserPremium from "../Pages/user/UserPremium";
 
 function User() {
   return (
@@ -49,6 +52,14 @@ function User() {
       />
 
       <Route
+        path="/music"
+        element={
+          <ProtectedRoute>
+            <UserMusic />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/profile"
         element={
           <ProtectedRoute>
@@ -71,6 +82,24 @@ function User() {
         element={
           <ProtectedRoute>
             <UserPlayList />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/forgotpassword"
+        element={
+          <PublicRoute>
+            <UserForgotPass />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/plans"
+        element={
+          <ProtectedRoute>
+            <UserPremium />
           </ProtectedRoute>
         }
       />

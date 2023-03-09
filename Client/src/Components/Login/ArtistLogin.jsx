@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../../redux/Slice/ArtistSlice";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -20,6 +22,8 @@ function LoginArtist() {
   const [error, setbError] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [loged, setLoged] = useState(false);
+  const dispatch = useDispatch();
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -81,8 +85,17 @@ function LoginArtist() {
         })
         .then((response) => {
           let result = response.data;
+          console.log(result);
           if (result.success) {
             setLoged(true);
+            dispatch(
+              setLogin({
+                user: "user",
+                name: result.name,
+                token: result.token,
+                id: result.id,
+              })
+            );
             navigate("/artist/home");
             localStorage.setItem("token", response.data.data);
           } else {
@@ -152,9 +165,11 @@ function LoginArtist() {
                   </div>
                 </form>
                 <div>
-                  <p className="underline text-center text-white mt-6">
-                    Forgot Password ?
-                  </p>
+                  <Link to="/forgotpassword">
+                    <p className="underline text-center text-white mt-6">
+                      Forgot Password ?
+                    </p>
+                  </Link>
                   <Link to="/signoptions">
                     <p className="underline text-center text-white mt-6">
                       Don't Have An Account? Register Here
