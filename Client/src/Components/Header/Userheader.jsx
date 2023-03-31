@@ -36,7 +36,7 @@ const UserBox = styled(Box)(() => ({
 const Header = () => {
   const [open, setOpen] = useState(false);
   const [currentUser, setcurrentUser] = useState(null);
-  const { name } = useSelector((state) => state.userLogin);
+  const { name, pic } = useSelector((state) => state.userLogin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -97,10 +97,7 @@ const Header = () => {
         </div>
         <div>
           <UserBox className="mr-5" onClick={(e) => setOpen(true)}>
-            <Avatar
-              sx={{ width: "30px", height: "30px" }}
-              src="https://w7..com/pngs/481/915/png-transparent-computer-icons-user-avatar-woman-avatar-computer-business-conversation-thumbnail.png"
-            />
+            <Avatar sx={{ width: "30px", height: "30px" }} src={pic} />
             <Typography color="white" fontFamily={"sans-serif"} varient="span">
               {currentUser}
             </Typography>

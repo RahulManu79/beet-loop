@@ -13,6 +13,9 @@ import UserPlayList from "../Pages/user/UserPlayList";
 import UserForgotPass from "../Pages/common Pages/UserForgotPass";
 import UserMusic from "../Pages/user/UserMusic";
 import UserPremium from "../Pages/user/UserPremium";
+import YourLibrary from "../Pages/user/YourLibrary";
+import PlayLitView from "../Pages/user/PlayLitView";
+import UserFollowArtist from "../Pages/user/UserFollowArtist";
 
 function User() {
   return (
@@ -100,6 +103,30 @@ function User() {
         element={
           <ProtectedRoute>
             <UserPremium />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/collection"
+        element={
+          <ProtectedRoute>
+            <YourLibrary />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/playlist-view"
+        element={
+          <ProtectedRoute>
+            <PlayLitView />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/list-artist"
+        element={
+          <ProtectedRoute>
+            <UserFollowArtist />
           </ProtectedRoute>
         }
       />

@@ -15,8 +15,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 function Userlistadmin() {
   const [user, setUser] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [alert, setalert] = useState(null);
-  const [userStatus, setUserStatus] = useState(false);
+  // const [alert, setalert] = useState(null);
+  // const [userStatus, setUserStatus] = useState(false);
 
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ function Userlistadmin() {
       }
     }
     invoke();
-  }, [userStatus, navigate]);
+  }, [navigate]);
 
   // const userBlk = async (userId) => {
   //   const data = await doUserBlk(userId);
@@ -89,7 +89,7 @@ function Userlistadmin() {
             type="button"
             className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
             onClick={() => {
-              // editCategory(params.row._id);
+              navigate({ pathname: "/admin/editcategory", search: "" });
             }}
           >
             Edit{" "}

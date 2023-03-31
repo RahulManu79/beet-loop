@@ -107,8 +107,17 @@ function Addmusic() {
   }, []);
   const handleImgUpload = (e) => {
     setImg(e.target.files[0]);
-    if (img == null) {
-      return;
+    if (!img) {
+      setbError("Please select image.");
+      seterrOpen(true);
+      return false;
+    }
+
+    if (!img.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+      setbError("Please select valid image.");
+      seterrOpen(true);
+
+      return false;
     }
 
     try {

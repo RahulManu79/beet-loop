@@ -6,7 +6,20 @@ const {
   updateProfile,
   getProfile,
 } = require("../Controllers/user/userController");
+const { addProfilepic } = require("../Controllers/user/Profilecontroller");
+const {
+  addPlaylist,
+  getPlaylist,
+  getCreatedplaylisted,
+  addSongToPlaylist,
+  getPlaylistsong,
+  removeSongfromplylist,
+} = require("../Controllers/PlayListControllers");
 const AuthMiddleware = require("../miiddleware/AuthMidilware");
+const {
+  addFollowing,
+  isFollowing,
+} = require("../Controllers/FollowingControllers");
 
 const router = express.Router();
 
@@ -19,5 +32,23 @@ router.post("/resetpass", resetPass);
 router.get("/getprofile/:id", AuthMiddleware, getProfile);
 
 router.post("/updateprofile", AuthMiddleware, updateProfile);
+
+router.post("/addprofilpic", AuthMiddleware, addProfilepic);
+
+router.post("/add-playlist/:id", addPlaylist);
+
+router.get("/get-playlist/:id", AuthMiddleware, getPlaylist);
+
+router.get("/created-playlist", getCreatedplaylisted);
+
+router.post("/addsong-playlist", addSongToPlaylist);
+
+router.get("/get-playlistsongs/:id", getPlaylistsong);
+
+router.post("/playlist-removesong", removeSongfromplylist);
+
+router.post("/follow-artist", addFollowing);
+
+router.get("/check-isfollwed/:id", isFollowing);
 
 module.exports = router;

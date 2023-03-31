@@ -1,174 +1,287 @@
-Akshay Brototype, [09-03-2023 07:20 PM]
+Akshay Brototype, [10-03-2023 09:09 AM]
 /* eslint-disable no-shadow */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { Button } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { storage } from '../../Config/firebase.config';
+import Button from '@mui/material/Button';
+import toast, { Toaster } from 'react-hot-toast';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { Auth } from '../../Config/firebase.config';
 import axios from '../../Axios/Axios';
-// import { setArtistLogin } from '../../Redux/Slice/ArtistSlice';
-import Progress from '../HelperComponents/Progress';
 
-function ArtistProfile() {
-  const [visible, setVisible] = useState(false);
-  const [editPic, setEditPic] = useState(false);
-  const [imageUpload, setImageUpload] = useState(null);
-  const [uploadedUrl, setUploadedUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [edit, setEdit] = useState(false);
-  const [artist, setArtist] = useState([]);
-  const { register, handleSubmit, formState: { errors } } = useForm();
+function ResetPassword() {
+  const [otpVerified, SetOtpVerified] = useState(false);
+  const [error, setError] = useState(false);
+  const [res, setRes] = useState(false);
+  const [vOtp, setVotp] = useState(false);
+  const [gotOtp, setGotOtp] = useState(false);
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState('fan');
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(30);
+  const navigate = useNavigate();
 
-  const { id } = useSelector((state) => state.artist);
-  useEffect(() => {
-    axios.get(/artist/getProfile/${id}).then((response) => {
-      const profile = response.data;
-      setArtist(profile.artist);
-      console.log(profile);
+  const {
+    register, handleSubmit, formState: { errors }, watch,
+  } = useForm();
+  const password = useRef({});
+  password.current = watch('password', '');
+
+  // eslint-disable-next-line no-shadow
+  function setUpRecaptcha(phone) {
+    const recaptchaVerifier = new RecaptchaVerifier(
+      'recaptcha-seeker-container',
+      {},
+      Auth,
+    );
+    recaptchaVerifier.render();
+    signInWithPhoneNumber(Auth, +91${phone}, recaptchaVerifier).then((response) => {
+      setRes(response);
+      document.getElementById('recaptcha-seeker-container').style.display = 'none';
+      console.log(response);
     });
-  }, []);
-  const handleEdit = () => {
-    setEdit(!edit);
+  }
+  function setResendRecaptcha(phone) {
+    const recaptchaVerifier = new RecaptchaVerifier(
+      'recaptcha-seeker-container-2',
+      {},
+      Auth,
+    );
+    recaptchaVerifier.render();
+    signInWithPhoneNumber(Auth, +91${phone}, recaptchaVerifier).then((response) => {
+      setRes(response);
+      document.getElementById('recaptcha-seeker-container-2').style.display = 'none';
+      console.log(response);
+    });
+  }
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   };
-  const handleEditProfile = (data) => {
-    console.log(data);
-    if (data) {
-      axios.put('/updateProfile/:id', { data, uploadedUrl }).then((response) => {
-        console.log(response);
+
+  const handleVerify = (e) => {
+    e.preventDefault();
+    if (email && phone) {
+      const isValid = validateEmail(email);
+      if (isValid) {
+        if (phone.length === 10) {
+          setGotOtp(true);
+          setUpRecaptcha(phone);
+        } else {
+          setError('Please give a valid phone number.');
+        }
+      } else {
+        setError('Please give a valid email');
+      }
+    } else {
+      setError('please provide a valid email address or phone number');
+    }
+  };
+  const handleVerificationOtp = async () => {
+    try {
+      await res.confirm(vOtp).then((result) => {
+        console.log(result);
+        toast.success(result.message);
+        SetOtpVerified(true);
+      });
+    } catch (err) {
+      console.log(err.message);
+      toast.error(err.message);
+    }
+  };
+  const resetPassword = (data) => {
+    if (data && role) {
+      axios.post('/resetPassword', { data, role, email }).then((response) => {
+        const result = response.data;
+        if (result.success) {
+          toast.success(result.message);
+          navigate('/');
+        } else {
+          toast.error(result.message);
+        }
       });
     }
   };
-  const handleProPic = () => {
-    setEditPic(true);
-    setVisible(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
+Akshay Brototype, [10-03-2023 09:09 AM]
+const validatePasswordMatch = (value) => {
+    if (value === password.current) {
+      return true;
+    }
+    return false;
   };
-  const handleProfilePic = async () => {
-    setLoading(true);
-    if (imageUpload == null) return;
-    const imageRef = ref(storage, profile/${imageUpload.name});
-    const uploadImage = uploadBytesResumable(imageRef, imageUpload);
-    console.log(uploadImage);
-    uploadImage.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        // setProgresspercent(progress);
-        setProgress(progress);
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
-          setLoading(false);
-          setUploadedUrl(downloadURL);
-          setEditPic(false);
-        });
-      },
-    );
+  const resendOTP = () => {
+    // console.log(recaptcha);
+    console.log(phone);
+    setResendRecaptcha(phone);
+    setMinutes(1);
+    setSeconds(30);
+    // setRecaptcha(true);
   };
+
   return (
-    <div className="container w-full h-full bg-transparent grid justify-center">
-      <div className="mt-5 flex flex-col justify-center ">
-        <div className="w-full h-full mt-3 flex flex-col justify-center">
-          <div className="w-full flex justify-center">
-            {loading && <Progress value={progress} />}
-            <div className="mt-2 flex items-center" onClick={() => setVisible(true)}>
-              {!uploadedUrl && (
-                <span className="inline-block h-32 w-32 overflow-hidden rounded-full bg-gray-100">
-                  <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                </span>
-              )}
-
-
-{uploadedUrl && <img src={uploadedUrl} alt="profile" className="w-32 h-32 rounded-full" />}
-            </div>
-          </div>
-          {visible && <Button variant="contained" onClick={handleProPic}>Edit Picture</Button>}
-          {
-           && (
-            <div className="bg-purple-700 border px-2 py-2 flex flex-col justify-center">
-              <input
-                type="file"
-                onChange={(event) => {
-                  setImageUpload(event.target.files[0]);
-                }}
-                accept="image/*"
-                className="h-10 rounded-md border border-gray-300 bg-white py-1.5 px-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50"
-              />
-              <div className="flex justify-center">
-                <Button
-                  variant="contained"
-                  sx={{ width: '50px', display: 'flex', justifyContent: 'center' }}
-                  onClick={handleProfilePic}
-                >
-                  Update
-                </Button>
+    <div className="container w-screen h-screen bg-hero flex justify-center items-center bg-cover bg-center">
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+      />
+      {otpVerified
+        ? (
+          <div>
+            <form onSubmit={handleSubmit(resetPassword)} className="w-508 h-510 bg-[#ff00e1b6] flex flex-col justify-center p-10 rounded-lg hover:ease-in-out transition-all">
+              <h1 className="text-3xl text-center font-extrabold">Enter Your New Password</h1>
+              <div className="w-full flex flex-col mt-2">
+                <h1 className="text-white">Password:</h1>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  className="w-full rounded-md border border-[#e727ca] p-2"
+                  {...register('password', {
+                    required: 'Fill this field with valid password',
+                    minLength: {
+                      value: 6,
+                      message: 'Password must be at least 6 characters',
+                    },
+                    pattern: {
+                      value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/,
+                      message:
+              'Password must contain at least one uppercase letter, one lowercase letter, one number, and be at least 6 characters long',
+                    },
+                  })}
+                />
+                {errors?.password && <span className="text-[red]">{errors.password.message}</span>}
               </div>
+              <div className="w-full flex flex-col mt-2">
+                <h1 className="text-white">Confirm Password:</h1>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  className="w-full rounded-md border border-[#e727ca] p-2"
+                  {...register('ConfirmPassword', {
+                    required: 'Please confirm your password',
+                    validate: validatePasswordMatch,
+                  })}
+                />
+                {errors.ConfirmPassword && errors.ConfirmPassword.type === 'required' && (
+                <p className="text-red-500">Confirm Password is required</p>
+                )}
+                {errors.ConfirmPassword && errors.ConfirmPassword.type === 'validate' && (
+                <p className="text-red-500">Passwords do not match</p>
+                )}
+              </div>
+              <div className="flex flex-col w-full justify-center mt-3 items-center">
+                <h1 className="text-xl font-semibold">Select Your Role</h1>
+                <label htmlFor="Role">
+                  {/* Role: */}
+                  <select value={role} onChange={(e) => setRole(e.target.value)} className="w-32 bg-[#1616e2] rounded-md p-2 text-white">
+                    <option value="fan">Fan</option>
+                    <option value="artist">Artist</option>
+                  </select>
+                </label>
+              </div>
+              <button type="submit" className="bg-[#001944] mt-5 h-10 rounded-lg text-white font-semibold hover:bg-[blue]">RESET</button>
+            </form>
+          </div>
+        )
+        : (
+          <form className="w-508 h-510 bg-[#ff00e1b6] flex flex-col justify-center p-10 rounded-lg hover:ease-in-out transition-all" onSubmit={handleVerify}>
+            <h1 className="text-xl font-extrabold text-center">Verify Your Account</h1>
+            <hr />
+            <div className="flex flex-col justify-center">
+              <h1 className="text-xl font-bold mt-3">Enter Your Email Address</h1>
+              <input
+                type="email"
+                className="h-10 w-full rounded-md "
+
+Akshay Brototype, [10-03-2023 09:09 AM]
+placeholder="Enter your email address here"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <h1 className="text-xl font-bold mt-3">Enter Your phone number</h1>
+              <input
+                type="number"
+                className="h-10 w-full rounded-md"
+                placeholder="Enter your phone number here"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              { error && <span className="text-white">{error}</span>}
+              <div id="recaptcha-seeker-container" className="mt-3" />
+              {
+              gotOtp && (
+                <div className="w-full flex-col justify-center">
+                  <h1 className="text-xl font-bold mt-3">Enter the OTP we send</h1>
+                  <input
+                    type="number"
+                    className="h-10 w-full rounded-md mt-3"
+                    placeholder="Enter your OTP here"
+                    value={vOtp}
+                    onChange={(e) => setVotp(e.target.value)}
+                  />
+                  <div className="flex w-full justify-between items-center mt-2">
+                    {seconds > 0  minutes > 0 ? (
+                      <p style={{ fontSize: '12px' }}>
+                        Time Remaining:
+                        {' '}
+                        {minutes < 10 ? `0${minutes}` : minutes}
+                        :
+                        {seconds < 10 ? `0${seconds}` : seconds}
+                      </p>
+                    ) : ''}
+                    { (!seconds > 0 && !minutes > 0) && (
+                    <Button
+                    // disabled={seconds > 0  minutes > 0}
+                      // style={{
+                      //   color: 'rgb(215 62 28)',
+                      //   backgroundColor: 'blue',
+                      //   border: 0,
+                      //   fontWeight: 'bold',
+                      //   ':hover': { backgroundColor: 'blue' },
+                      // }}
+                      className="w-full bg-blue hover:shadow-black hover:shadow-md"
+                      onClick={resendOTP}
+                      variant="contained"
+                    >
+                      Resend OTP
+                    </Button>
+                    )}
+                  </div>
+                  <div id="recaptcha-seeker-container-2" className="mt-3" />
+                  <button type="button" className="w-full bg-[#001944] mt-3 h-10 rounded-lg text-white font-semibold hover:bg-[blue]" onClick={handleVerificationOtp}>Verify</button>
+                </div>
+              )
+            }
+              {!gotOtp && <button type="submit" className="bg-[#001944] mt-3 h-10 rounded-lg text-white font-semibold hover:bg-[blue]">SEND OTP</button>}
             </div>
-          )}
-          <h1 className="text-3xl font-semibold text-white text-center">
-            {artist.name}
-          </h1>
-          <p className="text-white text-center">{artist.email}</p>
-          <p className="text-white text-center">
-            PH:
-            {artist.phone}
-          </p>
-        </div>
-        <hr />
-      </div>
-      { edit && (
-      <div className="container w-full">
-        <form onSubmit={handleSubmit(handleEditProfile)}>
-          <div>
-            <h1 className="text-white text-center">User Name</h1>
-            <input
-              type="text"
-              placeholder="UserName"
-              className="w-full rounded-md h-8 bg-[#e8e4ed] text-black"
-              value={artist.name}
-            />
-          </div>
-          <div>
-            <h1 className="text-white text-center">Email Address</h1>
-            <input
-              type="text"
-              placeholder="Enter your email address"
-              className="w-full rounded-md h-8 bg-[#efe8f5] text-black"
-              value={artist.email}
-            />
-          </div>
-          <div className="w-full flex justify-center mt-4">
-            <button className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md" type="submit">Submit</button>
-          </div>
-        </form>
-      </div>
-      )}
-      <div className="flex w-full gap-2 justify-center">
-        <button className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md" type="button">
-          <ExitToAppIcon />
-          Log out
-        </button>
-        <button
-          className="h-10 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-md"
-          type="button"
-          onClick={handleEdit}
-        >
-          {edit ? 'save' : 'Edit Profile' }
-        </button>
-      </div>
+          </form>
+        )}
     </div>
   );
 }
 
-export default ArtistProfile;
+export default ResetPassword;

@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
     // eslint-disable-next-line consistent-return
     jwt.verify(token, process.env.JWTPRIVATEKEY, (err, decoded) => {
       if (err) {
-        console.log("jwt potti");
+        console.log(err, "jwt potti");
         return res.status(401).send({
           message: "Auth failed",
           success: false,

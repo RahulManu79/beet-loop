@@ -78,6 +78,7 @@ module.exports = {
               data: token,
               name: user.name,
               id: user._id,
+              pic: user.profilepic,
             });
           } else {
             return res

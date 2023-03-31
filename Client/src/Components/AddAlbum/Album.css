@@ -1,0 +1,7 @@
+::placeholder {
+  color: white;
+}
+
+#inputID::placeholder {
+  color: white;
+}

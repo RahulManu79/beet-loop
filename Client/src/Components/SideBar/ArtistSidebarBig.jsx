@@ -36,10 +36,10 @@ function ArtistSidebar({ setIsOpen }) {
             <p className="text-white mr-32">Artists</p>
           </div>
         </Link>
-        <Link className="mt-10 ml-3">
+        <Link className="mt-10 ml-6" to="/artist/add-album">
           <div className="flex justify-around">
             <AlbumIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Albums</p>
+            <p className="text-white mr-32">Create Albums</p>
           </div>
         </Link>
         <Link className="mt-10 ml-3 " to="/artist/music">
@@ -64,12 +64,6 @@ function ArtistSidebar({ setIsOpen }) {
           <div className="flex justify-around">
             <QueueMusicIcon sx={{ color: "white" }} />
             <p className="text-white mr-32">PlayList</p>
-          </div>
-        </Link>
-        <Link className="mt-10 ml-3">
-          <div className="flex justify-around">
-            <DownloadIcon sx={{ color: "white" }} />
-            <p className="text-white mr-32">Downloads</p>
           </div>
         </Link>
       </div>

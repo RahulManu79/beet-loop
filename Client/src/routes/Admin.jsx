@@ -5,6 +5,7 @@ import AdminCatagory from "../Pages/Admin/AdminCatagory";
 import AdminHome from "../Pages/Admin/AdminHome";
 import AdminUserlist from "../Pages/Admin/AdminUserlist";
 import ArtistList from "../Pages/Admin/ArtistList";
+import EditCatagory from "../Pages/Admin/EditCatagory";
 import LoginAdmin from "../Pages/Admin/LoginAdmin";
 function Admin() {
   return (
@@ -15,6 +16,7 @@ function Admin() {
       <Route path="/artists" element={<ArtistList />} />
       <Route path="/category" element={<AdminCatagory />} />
       <Route path="/addcategory" element={<AdminAddCatagor />} />
+      <Route path="/editcategory" element={<EditCatagory />} />
     </Routes>
   );
 }

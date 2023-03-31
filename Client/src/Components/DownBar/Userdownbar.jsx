@@ -8,6 +8,7 @@ import music2 from "../../assets/Yedho_Ondru_-_Amos_Paul(256k).mp3";
 import music3 from "../../assets/Da_Da_Da_(Remix_by_Mikis)(256k).mp3";
 
 function Userdownbar({ songURL, img }) {
+  console.log(img, "img");
   let arr = [music1, music2, music3];
 
   return (
@@ -16,7 +17,7 @@ function Userdownbar({ songURL, img }) {
       className="main  flex relative"
     >
       <div className="f w-80 h-24 ">
-        <div>
+        <div className="bg-black w-32 h-24 ">
           <img src={img} alt="" />
         </div>
       </div>

@@ -1,0 +1,14 @@
+.css-22jxwj-MuiPaper-root-MuiDialog-paper {
+  background-color: #000 !important;
+  color: aqua !important;
+}
+
+.like {
+  background: rgb(74, 20, 244);
+  background: linear-gradient(
+    119deg,
+    rgba(74, 20, 244, 1) 31%,
+    rgba(91, 51, 240, 1) 49%,
+    rgba(131, 123, 231, 1) 77%
+  );
+}

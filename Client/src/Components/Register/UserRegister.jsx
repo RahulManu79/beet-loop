@@ -26,6 +26,8 @@ function UserRegister() {
   const [otpVerifyed, setVerified] = useState(false);
   const [success, setSuccess] = useState(null);
   const [login, setLogin] = useState(null);
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(30);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -154,9 +156,32 @@ function UserRegister() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
+
   return (
     <>
-      <div className="login h-screen bg-[#0F1F32]  flex justify-center content-center ">
+      <div className="login bg-[#0F1F32]  flex justify-center content-center ">
         <div className="innerbox bg-[#152537] p-10 shadow">
           <div className="w-full flex justify-center">
             <div className="hidden md:flex justify-center md:w-5/12 h-full ">
@@ -173,7 +198,6 @@ function UserRegister() {
                     <TextFiledCustom
                       id="standard-basic"
                       label="Name"
-                      required
                       variant="standard"
                       type="text"
                       name="name"
@@ -199,7 +223,6 @@ function UserRegister() {
                         maxWidth: "65%",
                         height: 42,
                       }}
-                      required
                     />
                   </div>
                   <div className="flex justify-center ml-1 mt-2">
@@ -219,7 +242,6 @@ function UserRegister() {
                         maxWidth: "52%",
                         height: 42,
                       }}
-                      required
                       onChange={(e) => {
                         console.log(e);
                         setPhone(e.target.value);
@@ -237,7 +259,7 @@ function UserRegister() {
                     className="flex justify-center ml-1 mt-2"
                   />
                   {otp && (
-                    <div className="w-full mt-2 flex justify-center">
+                    <div className="w-full mt-2 flex flex-col  items-center">
                       <TextFiledCustom
                         id="standard-basic"
                         label="Enter OTP"
@@ -248,13 +270,31 @@ function UserRegister() {
                           maxWidth: "52%",
                           height: 42,
                         }}
-                        required
                         onChange={(e) => {
                           console.log(e);
                           setEOtp(e.target.value);
                         }}
                       />
-
+                      <div className="w-full mt-2 flex  justify-center">
+                        {seconds > 0 || minutes > 0 ? (
+                          <p style={{ fontSize: "12px" }}>
+                            Time Remaining:{" "}
+                            {minutes < 10 ? `0${minutes}` : minutes} :
+                            {seconds < 10 ? `0${seconds}` : seconds}
+                          </p>
+                        ) : (
+                          <Button
+                            sx={{ width: "150px" }}
+                            onClick={setUpRecaptcha}
+                            variant="contained"
+                          >
+                            Resend OTP
+                          </Button>
+                        )}
+                        {/* {!seconds > 0 && !minutes > 0 && (
+                          
+                        )} */}
+                      </div>
                       <button
                         type="button"
                         className="bg-[#0800ff] text-white w-16 h-10 rounded-lg p-2 "
@@ -280,7 +320,6 @@ function UserRegister() {
                         maxWidth: "65%",
                         height: 42,
                       }}
-                      required
                     />
                   </div>
                   <div className="flex justify-center ml-1 mt-2">
@@ -299,7 +338,6 @@ function UserRegister() {
                         maxWidth: "65%",
                         height: 42,
                       }}
-                      required
                     />
                   </div>
                   <div className="flex justify-center mt-8">

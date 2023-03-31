@@ -9,7 +9,7 @@ import HttpsIcon from "@mui/icons-material/Https";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../../Config/firebase.config";
 import { Progress } from "../../../ui/Button";
-import { addProfilpic } from "../../../Api/Api";
+import { addArtistProfilePic } from "../../../Api/Api";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useSelector } from "react-redux";
@@ -19,7 +19,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 // eslint-disable-next-line react/prop-types
-function UserProfileSidebar() {
+function ArtistProfileSidebar() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [imgUrl, setImgUrl] = useState(null);
@@ -30,7 +30,7 @@ function UserProfileSidebar() {
   const [erropen, seterrOpen] = React.useState(false);
   const [success, setSuccess] = useState(null);
   const [error, seterror] = useState(null);
-  const { id } = useSelector((state) => state.userLogin);
+  const { id, pic } = useSelector((state) => state.artistLogin);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -80,7 +80,7 @@ function UserProfileSidebar() {
       };
       console.log("xxx");
       console.log(imgUrl);
-      const data = await addProfilpic(obj);
+      const data = await addArtistProfilePic(obj);
       console.log(data, "++++++");
       if (data.success == true) {
         setOpen(true);
@@ -121,7 +121,7 @@ function UserProfileSidebar() {
           {imgUrl && (
             <div>
               <LazyLoadImage
-                src={imgUrl}
+                src={imgUrl ? imgUrl : pic}
                 className="w-32 h-32 rounded-full"
                 alt="Image Alt"
               />
@@ -161,21 +161,21 @@ function UserProfileSidebar() {
           )}
         </div>
         <div className="flex justify-center items-center shadow-lg h-16">
-          <Link className="flex justify-around" to="/profile">
+          <Link className="flex justify-around" to="/artist/profile">
             <HomeIcon />
 
             <p className="text-white"> Account Overview</p>
           </Link>
         </div>
         <div className="flex justify-center items-center shadow-lg h-16">
-          <Link className="flex justify-around" to="/profile/edit">
+          <Link className="flex justify-around" to="/artist/edit-profile">
             <EditIcon />
             <p className="text-white"> Edit profile</p>
           </Link>
         </div>
 
         <div className="flex justify-center items-center shadow-lg h-16">
-          <Link className="flex justify-around" to="/profile/resetpass">
+          <Link className="flex justify-around" to="/artist/resetpass">
             <HttpsIcon />
             <p className="text-white">Reset Password</p>
           </Link>
@@ -203,4 +203,4 @@ function UserProfileSidebar() {
   );
 }
 
-export default UserProfileSidebar;
+export default ArtistProfileSidebar;

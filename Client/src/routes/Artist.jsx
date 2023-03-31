@@ -7,6 +7,9 @@ import ArtistAddMusic from "../Pages/Artist/ArtistAddMusic";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import PublicRoute from "../Components/PublicRoute";
 import ArtistMusic from "../Pages/Artist/ArtistMusic";
+import ArtistAddAlbum from "../Pages/Artist/ArtistaddAlbum";
+import ArtistProfilepage from "../Pages/Artist/ArtistProfilepage";
+import ArtistEditProfilePage from "../Pages/Artist/ArtistEditProfile";
 const Artist = () => {
   return (
     <Routes>
@@ -49,6 +52,30 @@ const Artist = () => {
         element={
           <ProtectedRoute>
             <ArtistMusic />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/add-album"
+        element={
+          <ProtectedRoute>
+            <ArtistAddAlbum />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ArtistProfilepage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/edit-profile"
+        element={
+          <ProtectedRoute>
+            <ArtistEditProfilePage />
           </ProtectedRoute>
         }
       />

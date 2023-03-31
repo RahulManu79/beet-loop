@@ -3,21 +3,33 @@ import logo from "../../assets/png.png";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import AlbumIcon from "@mui/icons-material/Album";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import DownloadIcon from "@mui/icons-material/Download";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { addplaylist } from "../../Api/Api";
+import { useSelector } from "react-redux";
 
 // eslint-disable-next-line react/prop-types
 function UserSidebar({ setIsOpen }) {
+  const navigate = useNavigate();
+  const { id } = useSelector((state) => state.userLogin);
+
+  const createPlaylist = async () => {
+    const data = await addplaylist(id);
+    if (data.success == true) {
+      navigate("/playlist");
+    } else {
+      alert("error");
+    }
+  };
   return (
     <>
       <div
         onMouseLeave={() => {
           setIsOpen(false);
         }}
-        className="bg-[#152537]  w-64 h-screen rounded-xl"
+        className="bg-[#152537]  w-64 h-[100vh] rounded-xl"
       >
         <div>
           <img src={logo} alt="" />
@@ -30,7 +42,7 @@ function UserSidebar({ setIsOpen }) {
             </div>
           </div>
         </Link>
-        <Link to="/artist">
+        <Link to="/list-artist">
           <div className="mt-10 ml-3">
             <div className="flex justify-around">
               <KeyboardVoiceIcon sx={{ color: "white" }} />
@@ -46,14 +58,7 @@ function UserSidebar({ setIsOpen }) {
             </div>
           </div>
         </Link>
-        <Link to="/music">
-          <div className="mt-10 ml-3">
-            <div className="flex justify-around">
-              <LibraryMusicIcon sx={{ color: "white" }} />
-              <p className="text-white mr-32">Musics</p>
-            </div>
-          </div>
-        </Link>
+
         <Link to="/favorites">
           <div className="mt-10 ml-3">
             <div className="flex justify-around">
@@ -62,19 +67,19 @@ function UserSidebar({ setIsOpen }) {
             </div>
           </div>
         </Link>
-        <Link to="/playlist">
-          <div className="mt-10 ml-3">
+        <Link>
+          <div className="mt-10 ml-3" onClick={createPlaylist}>
             <div className="flex justify-around">
               <QueueMusicIcon sx={{ color: "white" }} />
-              <p className="text-white mr-32">PlayList</p>
+              <p className="text-white mr-28">Create PlayList</p>
             </div>
           </div>
         </Link>
-        <Link to="/downloads">
+        <Link to="/collection">
           <div className="mt-10 ml-3">
             <div className="flex justify-around">
-              <DownloadIcon sx={{ color: "white" }} />
-              <p className="text-white mr-32">Downloads</p>
+              <LibraryBooksIcon sx={{ color: "white" }} />
+              <p className="text-white mr-32">Your Library</p>
             </div>
           </div>
         </Link>

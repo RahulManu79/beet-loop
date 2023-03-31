@@ -3,8 +3,9 @@ import { AppBar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getSongs } from "../../Api/Api";
 import Userdownbar from "../DownBar/Userdownbar";
-import Artistheader from "../Header/Artistheader";
-import ArtistSidebarMain from "../SideBar/ArtistSidebar";
+import SidebarMain from "../SideBar/SidebarMain";
+import Header from "../Header/Userheader";
+("../SideBar/SidebarMain");
 function Usermusic() {
   const [song, setsong] = useState([]);
   const [songURL, setSongURL] = useState("");
@@ -27,14 +28,14 @@ function Usermusic() {
   return (
     <div className="bg-[#0F1F32] flex">
       <div className="absolute">
-        <ArtistSidebarMain />
+        <SidebarMain />
       </div>
       <div className=" w-full h-screen flex flex-col">
         <div>
           <div className=" w-full h-20 ">
-            <Artistheader />
+            <Header />
           </div>
-          <div className="w-full h-full px-48">
+          <div className="w-full h-screen px-48 overflow-scroll scrollbar-hide">
             <div className=" w-full h-20">
               <h1 className="text-white font-bold text-2xl text-center">
                 All Musics <hr />

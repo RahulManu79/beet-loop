@@ -94,6 +94,7 @@ function LoginArtist() {
                 name: result.name,
                 token: result.token,
                 id: result.id,
+                pic: result.pic,
               })
             );
             navigate("/artist/home");

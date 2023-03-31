@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable no-lonely-if */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable comma-dangle */
@@ -78,6 +79,7 @@ module.exports = {
               data: token,
               name: user.name,
               id: user._id,
+              pic: user.profilepic,
             });
           } else {
             return res
@@ -91,5 +93,67 @@ module.exports = {
         .status(500)
         .send({ message: "error logging in", success: false, error });
     }
+  },
+  getProfile: async (req, res) => {
+    try {
+      const userId = req.params.id;
+      console.log(req.params);
+      const user = await Artist.findById(userId);
+      if (user) {
+        res.status(200).send({
+          message: "Fetched User Profile",
+          success: true,
+          data: user,
+        });
+      } else {
+        return res
+          .status(200)
+          .send({ message: "Error in Fetching User Profile ", success: false });
+      }
+    } catch (error) {
+      res.status(500).send({
+        message: "error in getting user Profile",
+        success: false,
+        error,
+      });
+    }
+  },
+  updateProfile: async (req, res) => {
+    console.log(req.body, req.query);
+    const { id } = req.query;
+    const { email, name, phone } = req.body;
+    try {
+      // eslint-disable-next-line object-shorthand
+      await Artist.findOneAndUpdate(
+        { _id: id },
+        { $set: { name: name, email: email, phone: phone } }
+      ).then(async () => {
+        const ruser = await Artist.findOne({ _id: id });
+        console.log(ruser);
+        res.status(200).send({
+          message: "Profile Updated Successful",
+          success: true,
+          name: ruser.name,
+          id: ruser._id,
+        });
+      });
+    } catch (error) {
+      res
+        .status(200)
+        .send({ message: "Error in updating Profile", success: false });
+    }
+  },
+  addProfilepic: async (req, res) => {
+    const userId = req.body.id;
+    const { img } = req.body;
+    const user = await Artist.findOneAndUpdate(
+      { _id: userId },
+      { profilepic: img }
+    );
+    console.log(user);
+    res.status(200).send({
+      message: "Profile Updated Successful",
+      success: true,
+    });
   },
 };

@@ -36,7 +36,7 @@ const UserBox = styled(Box)(() => ({
 function Artistheader() {
   const [open, setOpen] = useState(false);
   const [currentUser, setcurrentUser] = useState(null);
-  const { name } = useSelector((state) => state.artistLogin);
+  const { name, pic } = useSelector((state) => state.artistLogin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ function Artistheader() {
   };
 
   const getProfile = () => {
-    navigate("/profile");
+    navigate("/artist/profile");
   };
   return (
     <div className="h-[64px] w-full flex justify-end ">
@@ -99,7 +99,7 @@ function Artistheader() {
           <UserBox className="mr-5" onClick={(e) => setOpen(true)}>
             <Avatar
               sx={{ width: "30px", height: "30px" }}
-              src="https://w7..com/pngs/481/915/png-transparent-computer-icons-user-avatar-woman-avatar-computer-business-conversation-thumbnail.png"
+              src={pic ? pic : ""}
             />
             <Typography color="white" fontFamily={"sans-serif"} varient="span">
               {currentUser}

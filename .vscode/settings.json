@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "addplaylist",
     "Adminheader",
     "Artistheader",
     "Artisthome",
@@ -12,12 +13,16 @@
     "erropen",
     "JWTPRIVATEKEY",
     "miiddleware",
+    "Openmo",
+    "playlistname",
+    "potti",
     "setcurrent",
     "seterr",
     "seterror",
     "Signoptins",
     "Userlist",
     "Userlistadmin",
+    "Userplaylist",
     "Userregister"
   ]
 }
