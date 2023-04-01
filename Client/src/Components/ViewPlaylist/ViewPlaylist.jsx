@@ -160,13 +160,6 @@ function ViewPlaylist() {
                 </div>
               </div>
             </div>
-            <AppBar
-              position="fixed"
-              color="transparent"
-              sx={{ top: "auto", bottom: 0, height: 95 }}
-            >
-              <Userdownbar songURL={songURL} image={img} />
-            </AppBar>
           </div>
         </div>
         <Snackbar open={open} autoHideDuration={6000} onClose={snakhandleClose}>

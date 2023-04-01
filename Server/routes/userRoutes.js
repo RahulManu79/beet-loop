@@ -19,7 +19,9 @@ const AuthMiddleware = require("../miiddleware/AuthMidilware");
 const {
   addFollowing,
   isFollowing,
+  unFollowing,
 } = require("../Controllers/FollowingControllers");
+const { likeSong } = require("../Controllers/LikeController");
 
 const router = express.Router();
 
@@ -49,6 +51,10 @@ router.post("/playlist-removesong", removeSongfromplylist);
 
 router.post("/follow-artist", addFollowing);
 
+router.post("/unfollow-artist", unFollowing);
+
 router.get("/check-isfollwed/:id", isFollowing);
+
+router.post("/like", likeSong);
 
 module.exports = router;

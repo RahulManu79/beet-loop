@@ -16,6 +16,7 @@ import UserPremium from "../Pages/user/UserPremium";
 import YourLibrary from "../Pages/user/YourLibrary";
 import PlayLitView from "../Pages/user/PlayLitView";
 import UserFollowArtist from "../Pages/user/UserFollowArtist";
+import UserFavoritesPage from "../Pages/user/UserFavouritesPage";
 
 function User() {
   return (
@@ -127,6 +128,14 @@ function User() {
         element={
           <ProtectedRoute>
             <UserFollowArtist />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <ProtectedRoute>
+            <UserFavoritesPage />
           </ProtectedRoute>
         }
       />

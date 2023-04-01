@@ -34,7 +34,7 @@ module.exports = {
       });
       unFollowing.save();
 
-      res.status(200).send({ message: "Following Artist", success: true });
+      res.status(200).send({ message: "UnFollowed Artist ", success: true });
 
       // console.log("New following relationship added successfully");
     } catch (error) {

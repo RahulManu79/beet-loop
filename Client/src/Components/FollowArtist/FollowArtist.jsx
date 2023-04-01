@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Header/Userheader";
 import SidebarMain from "../SideBar/SidebarMain";
-import { getArtist } from "../../Api/Api";
+import { getArtist, isFollowing } from "../../Api/Api";
 import ArtistComponent from "./artistComponent";
+import { useSelector } from "react-redux";
 function FollowArtist() {
+  const { id } = useSelector((state) => state.userLogin);
   const [artist, setArtist] = useState([]);
+  const [response, setResponse] = useState([]);
 
   useEffect(() => {
     async function invoke() {
       const data = await getArtist();
+      const res = await isFollowing(id);
+      setResponse(res.following);
       if (data.success === false) {
         console.log("potti");
       } else {
@@ -16,7 +21,7 @@ function FollowArtist() {
       }
     }
     invoke();
-  }, []);
+  }, [artist]);
 
   return (
     <>
@@ -33,7 +38,11 @@ function FollowArtist() {
               <div className="text-white text-lg font-semibold">Artists</div>
               <div className="flex gap-4 gap-x-3 flex-wrap w-full h-96  mt-2 justify-center mb-32">
                 {artist.map((artist) => (
-                  <ArtistComponent key={artist._id} artist={artist} />
+                  <ArtistComponent
+                    key={artist._id}
+                    artist={artist}
+                    following={response}
+                  />
                 ))}
               </div>
             </div>

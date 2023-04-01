@@ -1,21 +1,21 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { FollowArtists, isFollowing, UnFollowArtists } from "../../Api/Api";
+import { FollowArtists, UnFollowArtists } from "../../Api/Api";
 import noProPic from "../../assets/no-profile-picture-6-1024x1024.jpg";
 import "../PlayList/playlist.css";
-function ArtistComponent({ artist }) {
+function ArtistComponent({ artist, following }) {
   const { id } = useSelector((state) => state.userLogin);
 
   const [follow, setFollow] = useState(false);
 
   useEffect(() => {
     async function invoke() {
-      const res = await isFollowing(id);
-      console.log(res);
+      const followed = following.some((obj) => obj.artist === artist._id);
+      setFollow(followed);
     }
     invoke();
-  }, []);
+  }, [following]);
   const handleFollowing = async (artistId) => {
     const obj = {
       userId: id,
@@ -52,14 +52,19 @@ function ArtistComponent({ artist }) {
       <div className="p-4 flex flex-col justify-center  content-center gap-4">
         <h1 className="text-white text-lg font-medium">{artist.name}</h1>
         {follow ? (
-          <button
-            className="bg-[#22DD22] hover:like px-4 py-1 rounded-lg text-white"
-            onClick={() => {
-              handleUnFollowing(artist?._id);
-            }}
-          >
-            UnFollow
-          </button>
+          <div className="group flex justify-center">
+            <button className="bg-[#1FC600] group-hover:hidden px-14 py-1 rounded-lg text-white">
+              Following
+            </button>
+            <button
+              className="group-hover:block hidden bg-[#C53030]   px-14 py-1 rounded-lg text-white"
+              onClick={() => {
+                handleUnFollowing(artist?._id);
+              }}
+            >
+              UnFollow
+            </button>
+          </div>
         ) : (
           <button
             className=" bg-[#3d5a80] hover:bg-[#98c1d9] px-4 py-1 rounded-lg text-white"

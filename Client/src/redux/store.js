@@ -13,6 +13,7 @@ import storage from "redux-persist/lib/storage";
 import { adminSlice } from "./Slice/AdminSlice";
 import { artistSlice } from "./Slice/ArtistSlice";
 import { userSlice } from "./Slice/UserSlice";
+import { songSlice } from "./Slice/SongSlice";
 const persistConfig = {
   key: "root",
   version: 1,
@@ -24,12 +25,14 @@ const ArtistpersistedReducer = persistReducer(
   artistSlice.reducer
 );
 const UserpersistedReducer = persistReducer(persistConfig, userSlice.reducer);
+const SongpersistedReducer = persistReducer(persistConfig, songSlice.reducer);
 
 export const store = configureStore({
   reducer: {
     userLogin: UserpersistedReducer,
     adminLogin: AdminpersistedReducer,
     artistLogin: ArtistpersistedReducer,
+    setSong: SongpersistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

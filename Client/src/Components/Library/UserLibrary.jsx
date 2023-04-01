@@ -1,6 +1,4 @@
-import { AppBar } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Userdownbar from "../DownBar/Userdownbar";
 import Header from "../Header/Userheader";
 import SidebarMain from "../SideBar/SidebarMain";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
@@ -81,13 +79,6 @@ function UserLibrary() {
                 ))}
               </div>
             </div>
-            <AppBar
-              position="fixed"
-              color="transparent"
-              sx={{ top: "auto", bottom: 0, height: 95 }}
-            >
-              <Userdownbar />
-            </AppBar>
           </div>
         </div>
       </div>

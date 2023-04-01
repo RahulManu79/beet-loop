@@ -409,3 +409,20 @@ export const isFollowing = async (id) => {
     return error.response.data.error;
   }
 };
+export const addLike = async (obj) => {
+  try {
+    const res = await axios.post(`http://localhost:4000/like`, obj, {
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+    });
+    const data = res.data;
+    console.log(data);
+
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error.response.data.error;
+  }
+};

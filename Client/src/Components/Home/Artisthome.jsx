@@ -10,14 +10,6 @@ function Artisthome() {
       <ArtistSidebarMain />
       <div className="w-full fixed  ">
         <Artistheader />
-
-        <AppBar
-          position="fixed"
-          color="transparent"
-          sx={{ top: "auto", bottom: 0, height: 95 }}
-        >
-          <Userdownbar />
-        </AppBar>
       </div>
     </div>
   );

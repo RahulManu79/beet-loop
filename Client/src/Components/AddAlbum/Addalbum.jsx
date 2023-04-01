@@ -88,13 +88,6 @@ function AddAlbum() {
               </div>
             </div>
           </div>
-          <AppBar
-            position="fixed"
-            color="transparent"
-            sx={{ top: "auto", bottom: 0, height: 95 }}
-          >
-            <Userdownbar />
-          </AppBar>
         </div>
         {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert

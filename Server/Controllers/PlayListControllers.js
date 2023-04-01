@@ -6,7 +6,7 @@ const { PlaylisModel } = require("../Model/PlaylisModel");
 module.exports = {
   addPlaylist: async (req, res) => {
     try {
-      const counted = await PlaylisModel.find().count();
+      const counted = await PlaylisModel.find({ owner: req.params.id }).count();
       const name = `My Playlist #${counted + 1}`;
       const NewPlaylist = await PlaylisModel({
         title: name,
